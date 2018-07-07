@@ -20,7 +20,9 @@ def get_dtwfeatures(proto_data, proto_number, local_sample):
     return features
 
 def read_dtw_matrix(version):
-    return np.genfromtxt(os.path.join("data", version+"-dtw_matrix.txt"), delimiter=' ')
+    if not os.path.exists(os.path.join("data", version+"-dtw-matrix.txt")):
+        exit("Please run cross_dtw.py first")
+    return np.genfromtxt(os.path.join("data", version+"-dtw-matrix.txt"), delimiter=' ')
 
 def random_selection(proto_number):
     # gets random prototypes
@@ -136,7 +138,7 @@ if __name__ == "__main__":
 
     train_data = (data_sets.train.images.reshape((-1, 50, 2)) + 1.) * (
             127.5 / 127.)  # this input_data assumes images
-    train_labels = data_sets.train.labels[:200]
+    train_labels = data_sets.train.labels
 
     train_number = np.shape(train_labels)[0]
 
@@ -144,15 +146,18 @@ if __name__ == "__main__":
     test_labels = data_sets.test.labels
     test_number = np.shape(test_labels)[0]
 
-    distances = read_dtw_matrix(version)
+    distances = [] if selection == "random" else read_dtw_matrix(version)
 
     if classwise == "classwise":
         proto_loc = np.zeros(0, dtype=np.int32)
         proto_factor = int(proto_number / no_classes)
         for c in range(no_classes):
             cw = np.where(train_labels == c)[0]
-            cw_distances = distances[cw]
-            cw_distances = cw_distances[:,cw]
+            if selection == "random":
+                cw_distances = []
+            else:
+                cw_distances = distances[cw]
+                cw_distances = cw_distances[:,cw]
             cw_proto = selector_selector(selection, proto_factor, cw_distances)
             proto_loc = np.append(proto_loc, cw[cw_proto])
     else:
@@ -160,8 +165,8 @@ if __name__ == "__main__":
 
     proto_data = train_data[proto_loc]
     print(proto_loc)
-    exit()
-    print("Selection Done.")
+    #exit()
+    #print("Selection Done.")
 
     # sorts the prototypes so deletion happens in reverse order and doesn't interfere with indices
     proto_loc[::-1].sort()
@@ -172,20 +177,14 @@ if __name__ == "__main__":
         train_labels = np.delete(train_labels, pl, 0)
 
     # start generation
-    test_label_fileloc = os.path.join("data", "test-label-{}-{}-{}.txt".format(version, selection, proto_number))
-    test_raw_fileloc = os.path.join("data", "raw-test-data-{}-{}-{}.txt".format(version, selection, proto_number))
-    test_dtw_fileloc = os.path.join("data",
-                                    "dtw_features-test-data-{}-{}-{}.txt".format(version, selection, proto_number))
-    test_combined_fileloc = os.path.join("data",
-                                         "dtw_features-plus-raw-test-data-{}-{}-{}.txt".format(version, selection,
-                                                                                               proto_number))
-    train_label_fileloc = os.path.join("data", "train-label-{}-{}-{}.txt".format(version, selection, proto_number))
-    train_raw_fileloc = os.path.join("data", "raw-train-data-{}-{}-{}.txt".format(version, selection, proto_number))
-    train_dtw_fileloc = os.path.join("data", "dtw_features-train-data-{}-{}-{}.txt".format(version, selection,
-                                                                                           proto_number))
-    train_combined_fileloc = os.path.join("data",
-                                          "dtw_features-plus-raw-train-data-{}-{}-{}.txt".format(version, selection,
-                                                                                                 proto_number))
+    test_label_fileloc = os.path.join("data", "test-label-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
+    test_raw_fileloc = os.path.join("data", "raw-test-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
+    test_dtw_fileloc = os.path.join("data", "dtw_features-test-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
+    test_combined_fileloc = os.path.join("data", "dtw_features-plus-raw-test-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
+    train_label_fileloc = os.path.join("data", "train-label-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
+    train_raw_fileloc = os.path.join("data", "raw-train-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
+    train_dtw_fileloc = os.path.join("data", "dtw_features-train-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
+    train_combined_fileloc = os.path.join("data", "dtw_features-plus-raw-train-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
 
     # test set
     with open(test_label_fileloc, 'w') as test_label_file, open(test_raw_fileloc, 'w') as test_raw_file, open(
