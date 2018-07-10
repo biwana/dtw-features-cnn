@@ -156,7 +156,7 @@ def main(argv):
 
     ns.load_settings_dtwfeatures(dataset, conv_dim, input_len, input_depth, input_method)
 
-    run_name = "dtw-features-fc1024-lr{0}-adam-{1}-{2}conv-{3}".format(ns.LEARNING_RATE, conv_dim, conv_shape, dataset)  # +"-"+nowtime
+    run_name = "dtw-features-fc1024-lr{0}-adam-{1}-{2}conv-{3}-{4}-{5}".format(ns.LEARNING_RATE, conv_dim, conv_shape, dataset, input_depth, input_method)  # +"-"+nowtime
 
     print(run_name)
 
