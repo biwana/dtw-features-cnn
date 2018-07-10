@@ -141,8 +141,8 @@ def cnn_model_2D(features, labels, mode):
         mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 def main(argv):
-    if len(argv) < 5:
-        print("Error, Syntax: {0} [train/test] [dataset] [conv dim] [conv width]".format(argv[0]))
+    if len(argv) < 8:
+        print("Error, Syntax: {0} [train/test] [dataset] [conv dim] [conv len] [input len] [input depth] [input method]".format(argv[0]))
         exit()
     global conv_shape
     conv_shape = int(argv[4])
@@ -150,7 +150,11 @@ def main(argv):
     conv_dim = argv[3]
     test = argv[1]
 
-    ns.load_settings_dtwfeatures(dataset, conv_dim)
+    input_len = int(argv[5])
+    input_depth = int(argv[6])
+    input_method = argv[7]
+
+    ns.load_settings_dtwfeatures(dataset, conv_dim, input_len, input_depth, input_method)
 
     run_name = "dtw-features-fc1024-lr{0}-adam-{1}-{2}conv-{3}".format(ns.LEARNING_RATE, conv_dim, conv_shape, dataset)  # +"-"+nowtime
 

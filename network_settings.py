@@ -1,3 +1,4 @@
+import math
 # ---------GENERIC--------------
 
 C1_LAYER_SIZE = 64
@@ -41,7 +42,7 @@ def load_settings_raw(dataset, dimen):
 		MPOOL_SHAPE = (2,1)
 		IMAGE_SHAPE = (50, 2, 1)
 
-def load_settings_dtwfeatures(dataset, dimen):
+def load_settings_dtwfeatures(dataset, dimen, input_len, input_depth, input_method):
 	global TRAINING_FILE
 	global TEST_FILE
 	global TRAINING_LABEL
@@ -51,31 +52,33 @@ def load_settings_dtwfeatures(dataset, dimen):
 	global CONV_OUTPUT_SHAPE
 	global MPOOL_SHAPE
 
-	TRAINING_FILE = "data/dtw_features-50-train-data-{0}.txt".format(dataset)
-	TEST_FILE = "data/dtw_features-50-test-data-{0}.txt".format(dataset)
-	TRAINING_LABEL = "data/train-label-{0}.txt".format(dataset)
-	TEST_LABEL = "data/test-label-{0}.txt".format(dataset)
+	TRAINING_FILE = "data/dtw_features-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth)
+	TEST_FILE = "data/dtw_features-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth)
+	TRAINING_LABEL = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth)
+	TEST_LABEL = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth)
 
 	if dataset == '1a':
 		NUM_CLASSES = 10
 	else:
 		NUM_CLASSES = 26
+
+	output_shape_factor = math.ceil(math.ceil(math.ceil(input_len / 2) / 2) / 2)
 	
 	if dimen == '1d':
-		CONV_OUTPUT_SHAPE = 7 #50 25 13 7
+		CONV_OUTPUT_SHAPE = output_shape_factor #50 25 13 7
 		MPOOL_SHAPE = 2
 		if dataset == '1a':
-			IMAGE_SHAPE = (50, 50) 
+			IMAGE_SHAPE = (input_len, input_depth)
 		else:
-			IMAGE_SHAPE = (50, 52) 
+			IMAGE_SHAPE = (input_len, input_depth)
 	else:
 		MPOOL_SHAPE = (2,1)
 		if dataset == '1a':
-			IMAGE_SHAPE = (50, 50, 1) 
-			CONV_OUTPUT_SHAPE = 7*50 #50 25 13 7
+			IMAGE_SHAPE = (input_len, input_depth, 1)
+			CONV_OUTPUT_SHAPE = output_shape_factor*input_depth #50 25 13 7
 		else:
-			IMAGE_SHAPE = (50, 52, 1) 
-			CONV_OUTPUT_SHAPE = 7*52 #50 25 13 7
+			IMAGE_SHAPE = (input_len, input_depth, 1)
+			CONV_OUTPUT_SHAPE = output_shape_factor*input_depth #50 25 13 7
 
 def load_settings_early(dataset, dimen):
 	global TRAINING_FILE
