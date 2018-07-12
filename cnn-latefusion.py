@@ -226,7 +226,7 @@ def main(argv):
 
     ns.load_settings_late(dataset, conv_dim, input_len, input_depth1, input_depth2, input_method)
 
-    run_name = "latefusion-fc1024-lr{0}-adam-{1}conv-{2}".format(ns.LEARNING_RATE, conv_shape, dataset)  # +"-"+nowtime
+    run_name = "latefusion-fc1024-lr{0}-adam-{1}-{2}conv-{3}-{4}-{5}".format(ns.LEARNING_RATE, conv_dim, conv_shape, dataset, input_depth2, input_method)  # +"-"+nowtime
 
     print(run_name)
 
