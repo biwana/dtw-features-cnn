@@ -230,6 +230,19 @@ def main(argv):
 
     print(run_name)
 
+    data_sets1 = input_data.read_data_sets(ns.TRAINING_FILE1, ns.TRAINING_LABEL1, ns.IMAGE_SHAPE1, test_file=ns.TEST_FILE1,
+                                          test_label=ns.TEST_LABEL1, validation_ratio=0.0, pickle=False, boring=False)
+    train_data1 = data_sets1.train.images  # Returns np.array
+    train_labels = np.asarray(data_sets1.train.labels, dtype=np.int32)
+    eval_data1 = data_sets1.test.images  # Returns np.array
+    eval_labels = np.asarray(data_sets1.test.labels, dtype=np.int32)
+
+
+    data_sets2 = input_data.read_data_sets(ns.TRAINING_FILE2, ns.TRAINING_LABEL2, ns.IMAGE_SHAPE2, test_file=ns.TEST_FILE2,
+                                          test_label=ns.TEST_LABEL2, validation_ratio=0.0, pickle=False, boring=False)
+    train_data2 = data_sets2.train.images  # Returns np.array
+    eval_data2 = data_sets2.test.images  # Returns np.array
+
     # Create the Estimator
     if conv_dim == "1d":
         classifier = tf.estimator.Estimator(model_fn=cnn_model_1D, model_dir="models/" + run_name)
