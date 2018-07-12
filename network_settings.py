@@ -173,7 +173,7 @@ def load_settings_mid(dataset, dimen):
 
 
 
-def load_settings_late(dataset, dimen):
+def load_settings_late(dataset, dimen, input_len, input_depth1, input_depth2, input_method):
 	global TRAINING_FILE1
 	global TEST_FILE1
 	global TRAINING_LABEL1
@@ -191,15 +191,15 @@ def load_settings_late(dataset, dimen):
 	global NUM_CLASSES
 	global MPOOL_SHAPE
 
-	TRAINING_FILE1 = "data/raw-train-data-{0}.txt".format(dataset)
-	TEST_FILE1 = "data/raw-test-data-1b.txt"
-	TRAINING_LABEL1 = "data/train-label-{0}.txt".format(dataset)
-	TEST_LABEL1 = "data/test-label-{0}.txt".format(dataset)
+	TRAINING_FILE1 = "data/raw-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TEST_FILE1 = "data/raw-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TRAINING_LABEL1 = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TEST_LABEL1 = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
 
-	TRAINING_FILE2 = "data/dtw_features-50-train-data-{0}.txt".format(dataset)
-	TEST_FILE2 = "data/dtw_features-50-test-data-{0}.txt".format(dataset)
-	TRAINING_LABEL2 = "data/train-label-{0}.txt".format(dataset)
-	TEST_LABEL2 = "data/test-label-{0}.txt".format(dataset)
+	TRAINING_FILE2 = "data/dtw_features-50-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TEST_FILE2 = "data/dtw_features-50-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TRAINING_LABEL2 = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TEST_LABEL2 = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
 
 	if dataset == '1a':
 		NUM_CLASSES = 10
@@ -211,22 +211,22 @@ def load_settings_late(dataset, dimen):
 		CONV_OUTPUT_SHAPE2 = 7 #50 25 13 7
 		MPOOL_SHAPE = 2
 		if dataset == '1a':
-			IMAGE_SHAPE1 = (50, 2) 
-			IMAGE_SHAPE2 = (50, 50)
+			IMAGE_SHAPE1 = (input_len, input_depth1)
+			IMAGE_SHAPE2 = (input_len, input_depth2)
 		else:
-			IMAGE_SHAPE1 = (50, 2) 
-			IMAGE_SHAPE2 = (50, 52)
+			IMAGE_SHAPE1 = (input_len, input_depth1)
+			IMAGE_SHAPE2 = (input_len, input_depth2)
 	else:
 		MPOOL_SHAPE = (2,1)
 		if dataset == '1a':
-			IMAGE_SHAPE1 = (50, 2, 1) 
-			IMAGE_SHAPE2 = (50, 50, 1) 
-			CONV_OUTPUT_SHAPE1 = 7*2 #50 25 13 7
-			CONV_OUTPUT_SHAPE2 = 7*50 #50 25 13 7
+			IMAGE_SHAPE1 = (input_len, input_depth1, 1)
+			IMAGE_SHAPE2 = (input_len, input_depth2, 1)
+			CONV_OUTPUT_SHAPE1 = 7*input_depth1 #50 25 13 7
+			CONV_OUTPUT_SHAPE2 = 7*input_depth2 #50 25 13 7
 		else:
-			IMAGE_SHAPE1 = (50, 2, 1) 
-			IMAGE_SHAPE2 = (50, 52, 1)
-			CONV_OUTPUT_SHAPE1 = 7*2 #50 25 13 7
-			CONV_OUTPUT_SHAPE2 = 7*52 #50 25 13 7
+			IMAGE_SHAPE1 = (input_len, input_depth1, 1)
+			IMAGE_SHAPE2 = (input_len, input_depth2, 1)
+			CONV_OUTPUT_SHAPE1 = 7*input_depth1 #50 25 13 7
+			CONV_OUTPUT_SHAPE2 = 7*input_depth2 #50 25 13 7
 
 
