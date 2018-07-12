@@ -196,8 +196,8 @@ def load_settings_late(dataset, dimen, input_len, input_depth1, input_depth2, in
 	TRAINING_LABEL1 = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
 	TEST_LABEL1 = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
 
-	TRAINING_FILE2 = "data/dtw_features-50-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_FILE2 = "data/dtw_features-50-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TRAINING_FILE2 = "data/dtw_features-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TEST_FILE2 = "data/dtw_features-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
 	TRAINING_LABEL2 = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
 	TEST_LABEL2 = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
 
