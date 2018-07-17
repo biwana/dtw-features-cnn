@@ -90,8 +90,8 @@ def load_settings_early(dataset, dimen, input_len, input_depth1, input_depth2, i
 	global CONV_OUTPUT_SHAPE
 	global MPOOL_SHAPE
 
-	TRAINING_FILE = "data/dtw_features-50-plus-raw-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_FILE = "data/dtw_features-50-plus-raw-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TRAINING_FILE = "data/dtw_features-plus-raw-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TEST_FILE = "data/dtw_features-plus-raw-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
 	TRAINING_LABEL = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
 	TEST_LABEL = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
 
