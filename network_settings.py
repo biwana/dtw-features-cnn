@@ -80,7 +80,7 @@ def load_settings_dtwfeatures(dataset, dimen, input_len, input_depth, input_meth
 			IMAGE_SHAPE = (input_len, input_depth, 1)
 			CONV_OUTPUT_SHAPE = output_shape_factor*input_depth #50 25 13 7
 
-def load_settings_early(dataset, dimen):
+def load_settings_early(dataset, dimen, input_len, input_depth1, input_depth2, input_method):
 	global TRAINING_FILE
 	global TEST_FILE
 	global TRAINING_LABEL
@@ -90,10 +90,12 @@ def load_settings_early(dataset, dimen):
 	global CONV_OUTPUT_SHAPE
 	global MPOOL_SHAPE
 
-	TRAINING_FILE = "data/dtw_features-50-plus-raw-train-data-{0}.txt".format(dataset)
-	TEST_FILE = "data/dtw_features-50-plus-raw-test-data-{0}.txt".format(dataset)
-	TRAINING_LABEL = "data/train-label-{0}.txt".format(dataset)
-	TEST_LABEL = "data/test-label-{0}.txt".format(dataset)
+	TRAINING_FILE = "data/dtw_features-50-plus-raw-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TEST_FILE = "data/dtw_features-50-plus-raw-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TRAINING_LABEL = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TEST_LABEL = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+
+	combo_shape = input_depth1 + input_depth2
 
 	if dataset == '1a':
 		NUM_CLASSES = 10
@@ -104,17 +106,17 @@ def load_settings_early(dataset, dimen):
 		CONV_OUTPUT_SHAPE = 7 #50 25 13 7
 		MPOOL_SHAPE = 2
 		if dataset == '1a':
-			IMAGE_SHAPE = (50, 52) 
+			IMAGE_SHAPE = (input_len, combo_shape)
 		else:
-			IMAGE_SHAPE = (50, 54) 
+			IMAGE_SHAPE = (input_len, combo_shape)
 	else:
 		MPOOL_SHAPE = (2,1)
 		if dataset == '1a':
-			IMAGE_SHAPE = (50, 52, 1) 
-			CONV_OUTPUT_SHAPE = 7*52 #50 25 13 7
+			IMAGE_SHAPE = (input_len, combo_shape, 1)
+			CONV_OUTPUT_SHAPE = 7*combo_shape #50 25 13 7
 		else:
-			IMAGE_SHAPE = (50, 54, 1) 
-			CONV_OUTPUT_SHAPE = 7*54 #50 25 13 7
+			IMAGE_SHAPE = (input_len, combo_shape, 1)
+			CONV_OUTPUT_SHAPE = 7*combo_shape #50 25 13 7
 
 
 
