@@ -161,7 +161,7 @@ def main(argv):
 
     print(run_name)
 
-    data_sets = input_data.read_data_sets(ns.TEST_FILE, ns.TEST_LABEL, ns.IMAGE_SHAPE, test_file=ns.TEST_FILE,
+    data_sets = input_data.read_data_sets(ns.TRAINING_FILE, ns.TRAINING_LABEL, ns.IMAGE_SHAPE, test_file=ns.TEST_FILE,
                                           test_label=ns.TEST_LABEL, validation_ratio=0.0, pickle=False, boring=False)
     train_data = data_sets.train.images  # Returns np.array
     train_labels = np.asarray(data_sets.train.labels, dtype=np.int32)
