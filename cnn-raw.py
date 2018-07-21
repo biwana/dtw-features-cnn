@@ -140,17 +140,18 @@ def cnn_model_2D(features, labels, mode):
 
 def main(argv):
     if len(argv) < 5:
-        print("Error, Syntax: {0} [train/test] [dataset] [conv dim] [conv width]".format(argv[0]))
+        print("Error, Syntax: {0} [train/test] [dataset] [conv dim] [conv width] [fold]".format(argv[0]))
         exit()
     global conv_shape
     conv_shape = int(argv[4])
     dataset = argv[2]
     conv_dim = argv[3]
     test = argv[1]
+    fold = int(argv[5])
 
-    ns.load_settings_raw(dataset, conv_dim)
+    ns.load_settings_raw(dataset, conv_dim, fold)
 
-    run_name = "raw-fc1024-lr{0}-adam-{1}conv-{2}".format(ns.LEARNING_RATE, conv_shape, dataset)  # +"-"+nowtime
+    run_name = "raw-fc1024-lr{0}-adam-{1}conv-{2}-fold{6}".format(ns.LEARNING_RATE, conv_shape, dataset, fold)  # +"-"+nowtime
 
     print(run_name)
 
