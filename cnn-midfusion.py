@@ -191,7 +191,7 @@ def cnn_model_2D(features, labels, mode):
 
 def main(argv):
     if len(argv) < 9:
-        print("Error, Syntax: {0} [train/test] [dataset] [conv dim] [conv len] [input len] [input1 depth] [input2 depth] [input method]".format(argv[0]))
+        print("Error, Syntax: {0} [train/test] [dataset] [conv dim] [conv len] [input len] [input1 depth] [input2 depth] [input method] [fold]".format(argv[0]))
         exit()
     global conv_shape
     conv_shape = int(argv[4])
@@ -203,10 +203,11 @@ def main(argv):
     input_depth1 = int(argv[6])
     input_depth2 = int(argv[7])
     input_method = argv[8]
+    fold = int(argv[9])
 
-    ns.load_settings_mid(dataset, conv_dim, input_len, input_depth1, input_depth2, input_method)
+    ns.load_settings_mid(dataset, conv_dim, input_len, input_depth1, input_depth2, input_method, fold)
 
-    run_name = "midfusion-fc1024-lr{0}-adam-{1}-{2}conv-{3}-{4}-{5}".format(ns.LEARNING_RATE, conv_dim, conv_shape, dataset, input_depth2, input_method)  # +"-"+nowtime
+    run_name = "midfusion-fc1024-lr{0}-adam-{1}-{2}conv-{3}-{4}-{5}-fold{6}".format(ns.LEARNING_RATE, conv_dim, conv_shape, dataset, input_depth2, input_method, fold)  # +"-"+nowtime
 
     print(run_name)
 

@@ -13,7 +13,7 @@ DROPOUT_RATE = 0.5
 LEARNING_RATE = 0.0001
 
 
-def load_settings_raw(dataset, dimen):
+def load_settings_raw(dataset, dimen, fold=0):
 	global TRAINING_FILE
 	global TEST_FILE
 	global TRAINING_LABEL
@@ -23,10 +23,10 @@ def load_settings_raw(dataset, dimen):
 	global CONV_OUTPUT_SHAPE
 	global MPOOL_SHAPE
 	
-	TRAINING_FILE = "data/raw-train-data-{0}.txt".format(dataset)
-	TEST_FILE = "data/raw-test-data-{0}.txt".format(dataset)
-	TRAINING_LABEL = "data/train-label-{0}.txt".format(dataset)
-	TEST_LABEL = "data/test-label-{0}.txt".format(dataset)
+	TRAINING_FILE = "data/fold{0}-raw-train-data-{1}.txt".format(fold, dataset)
+	TEST_FILE = "data/fold{0}-raw-test-data-{1}.txt".format(fold, dataset)
+	TRAINING_LABEL = "data/fold{0}-train-label-{1}.txt".format(fold, dataset)
+	TEST_LABEL = "data/fold{0}-test-label-{1}.txt".format(fold, dataset)
 
 	if dataset == '1a':
 		NUM_CLASSES = 10
@@ -42,7 +42,7 @@ def load_settings_raw(dataset, dimen):
 		MPOOL_SHAPE = (2,1)
 		IMAGE_SHAPE = (50, 2, 1)
 
-def load_settings_dtwfeatures(dataset, dimen, input_len, input_depth, input_method):
+def load_settings_dtwfeatures(dataset, dimen, input_len, input_depth, input_method, fold=0):
 	global TRAINING_FILE
 	global TEST_FILE
 	global TRAINING_LABEL
@@ -52,10 +52,10 @@ def load_settings_dtwfeatures(dataset, dimen, input_len, input_depth, input_meth
 	global CONV_OUTPUT_SHAPE
 	global MPOOL_SHAPE
 
-	TRAINING_FILE = "data/dtw_features-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth)
-	TEST_FILE = "data/dtw_features-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth)
-	TRAINING_LABEL = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth)
-	TEST_LABEL = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth)
+	TRAINING_FILE = "data/fold{0}-dtw_features-train-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth)
+	TEST_FILE = "data/fold{0}-dtw_features-test-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth)
+	TRAINING_LABEL = "data/fold{0}-train-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth)
+	TEST_LABEL = "data/fold{0}-test-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth)
 
 	if dataset == '1a':
 		NUM_CLASSES = 10
@@ -80,7 +80,7 @@ def load_settings_dtwfeatures(dataset, dimen, input_len, input_depth, input_meth
 			IMAGE_SHAPE = (input_len, input_depth, 1)
 			CONV_OUTPUT_SHAPE = output_shape_factor*input_depth #50 25 13 7
 
-def load_settings_early(dataset, dimen, input_len, input_depth1, input_depth2, input_method):
+def load_settings_early(dataset, dimen, input_len, input_depth1, input_depth2, input_method, fold=0):
 	global TRAINING_FILE
 	global TEST_FILE
 	global TRAINING_LABEL
@@ -90,10 +90,10 @@ def load_settings_early(dataset, dimen, input_len, input_depth1, input_depth2, i
 	global CONV_OUTPUT_SHAPE
 	global MPOOL_SHAPE
 
-	TRAINING_FILE = "data/dtw_features-plus-raw-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_FILE = "data/dtw_features-plus-raw-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TRAINING_LABEL = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_LABEL = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TRAINING_FILE = "data/fold{0}-dtw_features-plus-raw-train-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TEST_FILE = "data/fold{0}-dtw_features-plus-raw-test-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TRAINING_LABEL = "data/fold{0}-train-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TEST_LABEL = "data/fold{0}-test-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
 
 	combo_shape = input_depth1 + input_depth2
 
@@ -120,7 +120,7 @@ def load_settings_early(dataset, dimen, input_len, input_depth1, input_depth2, i
 
 
 
-def load_settings_mid(dataset, dimen, input_len, input_depth1, input_depth2, input_method):
+def load_settings_mid(dataset, dimen, input_len, input_depth1, input_depth2, input_method, fold=0):
 	global TRAINING_FILE1
 	global TEST_FILE1
 	global TRAINING_LABEL1
@@ -138,15 +138,15 @@ def load_settings_mid(dataset, dimen, input_len, input_depth1, input_depth2, inp
 	global NUM_CLASSES
 	global MPOOL_SHAPE
 
-	TRAINING_FILE1 = "data/raw-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_FILE1 = "data/raw-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TRAINING_LABEL1 = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_LABEL1 = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TRAINING_FILE1 = "data/fold{0}-raw-train-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TEST_FILE1 = "data/fold{0}-raw-test-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TRAINING_LABEL1 = "data/fold{0}-train-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TEST_LABEL1 = "data/fold{0}-test-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
 
-	TRAINING_FILE2 = "data/dtw_features-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_FILE2 = "data/dtw_features-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TRAINING_LABEL2 = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_LABEL2 = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TRAINING_FILE2 = "data/fold{0}-dtw_features-train-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TEST_FILE2 = "data/fold{0}-dtw_features-test-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TRAINING_LABEL2 = "data/fold{0}-train-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TEST_LABEL2 = "data/fold{0}-test-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
 
 	if dataset == '1a':
 		NUM_CLASSES = 10
@@ -175,7 +175,7 @@ def load_settings_mid(dataset, dimen, input_len, input_depth1, input_depth2, inp
 
 
 
-def load_settings_late(dataset, dimen, input_len, input_depth1, input_depth2, input_method):
+def load_settings_late(dataset, dimen, input_len, input_depth1, input_depth2, input_method, fold=0):
 	global TRAINING_FILE1
 	global TEST_FILE1
 	global TRAINING_LABEL1
@@ -193,15 +193,15 @@ def load_settings_late(dataset, dimen, input_len, input_depth1, input_depth2, in
 	global NUM_CLASSES
 	global MPOOL_SHAPE
 
-	TRAINING_FILE1 = "data/raw-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_FILE1 = "data/raw-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TRAINING_LABEL1 = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_LABEL1 = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TRAINING_FILE1 = "data/fold{0}-raw-train-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TEST_FILE1 = "data/fold{0}-raw-test-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TRAINING_LABEL1 = "data/fold{0}-train-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TEST_LABEL1 = "data/fold{0}-test-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
 
-	TRAINING_FILE2 = "data/dtw_features-train-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_FILE2 = "data/dtw_features-test-data-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TRAINING_LABEL2 = "data/train-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
-	TEST_LABEL2 = "data/test-label-{0}-{1}-{2}.txt".format(dataset, input_method, input_depth2)
+	TRAINING_FILE2 = "data/fold{0}-dtw_features-train-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TEST_FILE2 = "data/fold{0}-dtw_features-test-data-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TRAINING_LABEL2 = "data/fold{0}-train-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
+	TEST_LABEL2 = "data/fold{0}-test-label-{1}-{2}-{3}.txt".format(fold, dataset, input_method, input_depth2)
 
 	if dataset == '1a':
 		NUM_CLASSES = 10
