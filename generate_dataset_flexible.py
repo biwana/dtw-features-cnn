@@ -1,7 +1,7 @@
 import dtw
 import time
 import numpy as np
-import input_data
+import input_data_crossvalid as input_data
 import network_settings as ns
 import math
 import csv
@@ -115,13 +115,14 @@ def selector_selector(selection, proto_number, distances):
         return random_selection(proto_number)
 
 if __name__ == "__main__":
-    if len(sys.argv) < 5:
-        print("Error, Syntax: {0} [version] [prototype selection] [classwise/independent] [prototype number]".format(sys.argv[0]))
+    if len(sys.argv) < 6:
+        print("Error, Syntax: {0} [version] [prototype selection] [classwise/independent] [prototype number] [fold]".format(sys.argv[0]))
         exit()
     version = sys.argv[1]
     selection = sys.argv[2]
     classwise = sys.argv[3]
     proto_number = int(sys.argv[4])
+    fold = int(sys.argv[5])
 
     print("Starting: {}".format(version))
 
@@ -131,7 +132,7 @@ if __name__ == "__main__":
     full_label_file = os.path.join("data", version + "-re-labels.txt")
     # load data
     data_sets = input_data.read_data_sets(full_data_file, full_label_file, ns.IMAGE_SHAPE, test_ratio=0.1,
-                                          validation_ratio=0.0, pickle=False, boring=False)
+                                          validation_ratio=0.0, pickle=False, boring=False, fold=fold)
 
     no_classes = ns.NUM_CLASSES
     # print(proto_number)
@@ -177,14 +178,14 @@ if __name__ == "__main__":
         train_labels = np.delete(train_labels, pl, 0)
 
     # start generation
-    test_label_fileloc = os.path.join("data", "test-label-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
-    test_raw_fileloc = os.path.join("data", "raw-test-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
-    test_dtw_fileloc = os.path.join("data", "dtw_features-test-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
-    test_combined_fileloc = os.path.join("data", "dtw_features-plus-raw-test-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
-    train_label_fileloc = os.path.join("data", "train-label-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
-    train_raw_fileloc = os.path.join("data", "raw-train-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
-    train_dtw_fileloc = os.path.join("data", "dtw_features-train-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
-    train_combined_fileloc = os.path.join("data", "dtw_features-plus-raw-train-data-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
+    test_label_fileloc = os.path.join("data", "fold{}-test-label-{}-{}-{}-{}.txt".format(fold, version, selection, classwise, proto_number))
+    test_raw_fileloc = os.path.join("data", "fold{}-raw-test-data-{}-{}-{}-{}.txt".format(fold, version, selection, classwise, proto_number))
+    test_dtw_fileloc = os.path.join("data", "fold{}-dtw_features-test-data-{}-{}-{}-{}.txt".format(fold, version, selection, classwise, proto_number))
+    test_combined_fileloc = os.path.join("data", "fold{}-dtw_features-plus-raw-test-data-{}-{}-{}-{}.txt".format(fold, version, selection, classwise, proto_number))
+    train_label_fileloc = os.path.join("data", "fold{}-train-label-{}-{}-{}-{}.txt".format(fold, version, selection, classwise, proto_number))
+    train_raw_fileloc = os.path.join("data", "fold{}-raw-train-data-{}-{}-{}-{}.txt".format(fold, version, selection, classwise, proto_number))
+    train_dtw_fileloc = os.path.join("data", "fold{}-dtw_features-train-data-{}-{}-{}-{}.txt".format(fold, version, selection, classwise, proto_number))
+    train_combined_fileloc = os.path.join("data", "fold{}-dtw_features-plus-raw-train-data-{}-{}-{}-{}.txt".format(fold, version, selection, classwise, proto_number))
 
     # test set
     with open(test_label_fileloc, 'w') as test_label_file, open(test_raw_fileloc, 'w') as test_raw_file, open(
