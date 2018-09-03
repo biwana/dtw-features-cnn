@@ -19,10 +19,19 @@ def get_dtwfeatures(proto_data, proto_number, local_sample):
             features[f, prototype] = cost[path[0][f]][path[1][f]]
     return features
 
-def read_dtw_matrix(version):
+def read_dtw_matrix(version, fold, test_num, train_num):
     if not os.path.exists(os.path.join("data", version+"-dtw-matrix.txt")):
         exit("Please run cross_dtw.py first")
-    return np.genfromtxt(os.path.join("data", version+"-dtw-matrix.txt"), delimiter=' ')
+    ds = np.genfromtxt(os.path.join("data", version+"-dtw-matrix.txt"), delimiter=' ')
+    indices = np.arange(test_num + train_num)
+    test_start = fold * test_num
+    test_end = (fold+1) * test_num
+    testset = indices[test_start:test_end]
+    testset[::-1].sort()
+    for pl in testset:
+        indices = np.delete(indices, pl, 0)
+    trainset = indices
+    return ds[trainset]
 
 def random_selection(proto_number):
     # gets random prototypes
@@ -147,7 +156,7 @@ if __name__ == "__main__":
     test_labels = data_sets.test.labels
     test_number = np.shape(test_labels)[0]
 
-    distances = [] if selection == "random" else read_dtw_matrix(version)
+    distances = [] if selection == "random" else read_dtw_matrix(version, fold, test_number, train_number)
 
     if classwise == "classwise":
         proto_loc = np.zeros(0, dtype=np.int32)
