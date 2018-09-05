@@ -165,6 +165,8 @@ if __name__ == "__main__":
 
     test_number = np.shape(test_labels)[0]
 
+    seq_length = np.size(test_data[0])
+
     distances = [] if selection == "random" else read_dtw_matrix(version)
 
     if classwise == "classwise":
@@ -223,8 +225,8 @@ if __name__ == "__main__":
             class_value = test_labels[sample]
 
             # write files
-            feature_flat = features.reshape(50 * proto_number)
-            local_sample_flat = local_sample.reshape(50 * 2)
+            feature_flat = features.reshape(seq_length * proto_number)
+            local_sample_flat = local_sample.reshape(seq_length)
             writer_test_raw.writerow(local_sample_flat)
             writer_test_dtw.writerow(feature_flat)
             writer_test_combined.writerow(np.append(local_sample_flat, feature_flat))
@@ -249,8 +251,8 @@ if __name__ == "__main__":
             class_value = train_labels[sample]
 
             # write files
-            feature_flat = features.reshape(50 * proto_number)
-            local_sample_flat = local_sample.reshape(50 * 2)
+            feature_flat = features.reshape(seq_length * proto_number)
+            local_sample_flat = local_sample.reshape(seq_length)
             writer_train_raw.writerow(local_sample_flat)
             writer_train_dtw.writerow(feature_flat)
             writer_train_combined.writerow(np.append(local_sample_flat, feature_flat))
