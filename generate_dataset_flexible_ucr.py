@@ -10,7 +10,7 @@ import sys
 
 
 def get_dtwfeatures(proto_data, proto_number, local_sample):
-    features = np.zeros((50, proto_number))
+    features = np.zeros((np.shape(local_sample)[0], proto_number))
     for prototype in range(proto_number):
         local_proto = proto_data[prototype]
         output, cost, DTW, path = dtw.dtw(local_proto, local_sample, extended=True)
@@ -156,18 +156,17 @@ if __name__ == "__main__":
     # print(proto_number)
 
     train_data = full_train[:,1:]
-    train_data = train_data.reshape((-1, np.size(train_data[0]), 1))
     train_labels = full_train[:,0]
 
     train_number = np.shape(train_labels)[0]
 
     test_data = full_test[:,1:]
-    test_data = test_data.reshape((-1, np.size(test_data[0]), 1))
     test_labels = full_test[:,0]
-
     test_number = np.shape(test_labels)[0]
+    seq_length = np.shape(test_data)[1]
 
-    seq_length = np.size(test_data[0])
+    train_data = train_data.reshape((-1,seq_length, 1))
+    test_data = test_data.reshape((-1, seq_length, 1))
 
     distances = [] if selection == "random" else read_dtw_matrix(version)
 
