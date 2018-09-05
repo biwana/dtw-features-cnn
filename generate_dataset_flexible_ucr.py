@@ -162,7 +162,7 @@ if __name__ == "__main__":
     train_number = np.shape(train_labels)[0]
 
     test_data = full_test[:,1:]
-    train_data = train_data.reshape((-1, np.size(test_data[0]), 1))
+    test_data = train_data.reshape((-1, np.size(test_data[0]), 1))
     test_labels = full_test[:,0]
 
     test_number = np.shape(test_labels)[0]
