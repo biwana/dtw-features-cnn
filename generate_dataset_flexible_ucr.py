@@ -10,12 +10,13 @@ import sys
 
 
 def get_dtwfeatures(proto_data, proto_number, local_sample):
-    features = np.zeros((np.shape(local_sample)[0], proto_number))
+    local_sample_length = np.shape(local_sample)[0]
+    features = np.zeros((local_sample_length, proto_number))
     for prototype in range(proto_number):
         local_proto = proto_data[prototype]
         output, cost, DTW, path = dtw.dtw(local_proto, local_sample, extended=True)
 
-        for f in range(50):
+        for f in range(local_sample_length):
             features[f, prototype] = cost[path[0][f]][path[1][f]]
     return features
 
