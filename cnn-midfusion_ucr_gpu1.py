@@ -4,8 +4,8 @@ import time
 import numpy as np
 import network_settings_ucr as ns
 
-#import os
-#os.environ["CUDA_VISIBLE_DEVICES"]="0"
+import os
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 nowtime = str(time.time())
 
