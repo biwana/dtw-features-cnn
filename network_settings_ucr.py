@@ -42,10 +42,10 @@ def load_settings_mid(dataset, dimen, input_len, input_depth1, input_depth2, inp
 
     NUM_CLASSES = num_classes
 
-    output_factor = int(math.ceil(math.ceil(math.ceil(input_len / 2.) / 2.) / 2.))
+    output_shape_factor = int(math.ceil(math.ceil(math.ceil(input_len / 2.) / 2.) / 2.))
 
     if dimen == '1d':
-        CONV_OUTPUT_SHAPE = output_factor * input_depth1  # 50 25 13 7
+        CONV_OUTPUT_SHAPE = output_shape_factor * 2  # 50 25 13 7
         MPOOL_SHAPE = 2
         IMAGE_SHAPE1 = (input_len, input_depth1)
         IMAGE_SHAPE2 = (input_len, input_depth2)
@@ -53,5 +53,5 @@ def load_settings_mid(dataset, dimen, input_len, input_depth1, input_depth2, inp
         MPOOL_SHAPE = (2, 1)
         IMAGE_SHAPE1 = (input_len, input_depth1, 1)
         IMAGE_SHAPE2 = (input_len, input_depth2, 1)
-        CONV_OUTPUT_SHAPE = (output_factor * input_depth1) + (output_factor * input_depth2)
+        CONV_OUTPUT_SHAPE = (output_shape_factor * input_depth1) + (output_shape_factor * input_depth2)
 
