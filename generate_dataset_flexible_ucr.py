@@ -134,6 +134,26 @@ def param_selector(dataset):
     else:
         return 10
 
+def class_modifier(dataset):
+    if dataset == "ElectricDevices":
+        return 0 #96
+    if dataset == "FordA":
+        return 0 #500
+    if dataset == "NonInvasiveFatalECG_Thorax1":
+        return 0 #750
+    if dataset == "NonInvasiveFatalECG_Thorax2":
+        return 0 #750
+    if dataset == "PhalangesOutlinesCorrect":
+        return 0 #80
+    if dataset == "StarLightCurves":
+        return 0 #1024
+    if dataset == "Two_Patterns":
+        return -1 #128
+    if dataset == "wafer":
+        return 0 #152
+    else:
+        return 0
+
 if __name__ == "__main__":
     if len(sys.argv) < 5:
         print("Error, Syntax: {0} [version] [prototype selection] [classwise/independent] [prototype number]".format(sys.argv[0]))
@@ -156,12 +176,13 @@ if __name__ == "__main__":
     # print(proto_number)
 
     train_data = full_train[:,1:]
-    train_labels = full_train[:,0]
+    train_labels = full_train[:,0] + class_modifier(version)
 
     train_number = np.shape(train_labels)[0]
 
     test_data = full_test[:,1:]
-    test_labels = full_test[:,0]
+    test_labels = full_test[:,0] + class_modifier(version)
+
     test_number = np.shape(test_labels)[0]
     seq_length = np.shape(test_data)[1]
 
