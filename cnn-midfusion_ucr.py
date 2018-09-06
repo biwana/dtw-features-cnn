@@ -207,7 +207,7 @@ def main(argv):
 
     ns.load_settings_mid(dataset, conv_dim, input_len, input_depth1, input_depth2, input_method, num_classes)
 
-    run_name = "midfusion-fc1024-lr{0}-adam-{1}-{2}conv-{3}-{4}-{5}-all".format(ns.LEARNING_RATE, conv_dim, input_method)  # +"-"+nowtime
+    run_name = "midfusion-fc1024-lr{0}-adam-{1}-{2}conv-{3}-{4}-{5}-all".format(ns.LEARNING_RATE, conv_dim, conv_shape, dataset, input_method, input_depth2)  # +"-"+nowtime
 
     print(run_name)
 
