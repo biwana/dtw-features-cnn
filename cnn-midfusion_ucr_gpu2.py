@@ -267,6 +267,7 @@ def main(argv):
         eval_results = classifier.evaluate(input_fn=eval_input_fn)
         print(run_name)
         print(eval_results)
+        np.savetxt("output/"+run_name+"-"+str(eval_results["accuracy"]), [eval_results["accuracy"]])
     else:
         # test
         # Evaluate the model and print results

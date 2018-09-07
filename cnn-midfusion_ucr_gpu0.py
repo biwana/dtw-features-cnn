@@ -220,6 +220,8 @@ def main(argv):
     eval_data1 = data_sets1.test.images  # Returns np.array
     eval_labels = np.asarray(data_sets1.test.labels, dtype=np.int32)
 
+    print(np.shape(train_data1))
+
     data_sets2 = input_data.read_data_sets(ns.TRAINING_FILE2, ns.TRAINING_LABEL2, ns.IMAGE_SHAPE2, test_file=ns.TEST_FILE2, test_label=ns.TEST_LABEL2, validation_ratio=0.0, pickle=False, boring=False)
     train_data2 = data_sets2.train.images  # Returns np.array
     eval_data2 = data_sets2.test.images  # Returns np.array
@@ -267,6 +269,7 @@ def main(argv):
         eval_results = classifier.evaluate(input_fn=eval_input_fn)
         print(run_name)
         print(eval_results)
+        np.savetxt("output/"+run_name+"-"+str(eval_results["accuracy"]), [eval_results["accuracy"]])
     else:
         # test
         # Evaluate the model and print results
