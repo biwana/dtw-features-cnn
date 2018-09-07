@@ -25,7 +25,7 @@ if __name__ == "__main__":
         print("Starting: {}".format(version))
 
         # load settings
-        ns.load_settings_raw(version, "1d")
+        ns.load_settings_raw(version, "1d", 50, 2)
         full_data_file = os.path.join("data", version + "-re-data.txt")
         full_label_file = os.path.join("data", version + "-re-labels.txt")
         # load data
