@@ -149,8 +149,8 @@ def main(argv):
     test = argv[1]
     fold = int(argv[5])
 
-    ns.load_settings_raw(dataset, conv_dim, fold)
-
+    ns.load_settings_raw(dataset, conv_dim, 50, 2, fold)
+    
     run_name = "raw-fc1024-lr{0}-adam-{1}conv-{2}-fold{3}".format(ns.LEARNING_RATE, conv_shape, dataset, fold)  # +"-"+nowtime
 
     print(run_name)

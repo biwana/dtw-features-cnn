@@ -13,7 +13,7 @@ DROPOUT_RATE = 0.5
 LEARNING_RATE = 0.0001
 
 
-def load_settings_raw(dataset, dimen, input_len, fold=0):
+def load_settings_raw(dataset, dimen, input_len, input_depth, fold=0):
 	global TRAINING_FILE
 	global TEST_FILE
 	global TRAINING_LABEL
@@ -38,11 +38,11 @@ def load_settings_raw(dataset, dimen, input_len, fold=0):
 	if dimen == '1d':
 		CONV_OUTPUT_SHAPE = output_shape_factor #50 25 13 7
 		MPOOL_SHAPE = 2
-		IMAGE_SHAPE = (50, 2) 
+		IMAGE_SHAPE = (input_len, input_depth)
 	else:
 		CONV_OUTPUT_SHAPE = 7*2 #50 25 13 7
 		MPOOL_SHAPE = (2,1)
-		IMAGE_SHAPE = (50, 2, 1)
+		IMAGE_SHAPE = (input_len, input_depth, 1)
 
 def load_settings_dtwfeatures(dataset, dimen, input_len, input_depth, input_method, fold=0):
 	global TRAINING_FILE
