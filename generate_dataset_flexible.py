@@ -10,19 +10,35 @@ import sys
 
 
 def get_dtwfeatures(proto_data, proto_number, local_sample):
-    features = np.zeros((50, proto_number))
+    local_sample_length = np.shape(local_sample)[0]
+    features = np.zeros((local_sample_length, proto_number))
     for prototype in range(proto_number):
         local_proto = proto_data[prototype]
         output, cost, DTW, path = dtw.dtw(local_proto, local_sample, extended=True)
 
-        for f in range(50):
+        for f in range(local_sample_length):
             features[f, prototype] = cost[path[0][f]][path[1][f]]
     return features
 
 def read_dtw_matrix(version, fold):
-    if not os.path.exists(os.path.join("data", "fold"+str(fold)+"-"+version+"-dtw-matrix.txt")):
-        exit("Please run cross_dtw.py first")
-    return np.genfromtxt(os.path.join("data", "fold"+str(fold)+"-"+version+"-dtw-matrix.txt"), delimiter=' ')
+#    if not os.path.exists(os.path.join("data", "fold"+str(fold)+"-"+version+"-dtw-matrix.txt")):
+#        exit("Please run cross_dtw_full.py first")
+#    return np.genfromtxt(os.path.join("data", "fold"+str(fold)+"-"+version+"-dtw-matrix.txt"), delimiter=' ')
+    if not os.path.exists(os.path.join("data", "all-"+version+"-dtw-matrix.txt")):
+        exit("Please run cross_dtw_full.py first")
+    full = np.genfromtxt(os.path.join("data", "all-"+version+"-dtw-matrix.txt"), delimiter=' ')
+    number = full.shape[0]
+    indices = np.arange(number)
+    test_ratio = 0.1
+    test_start = fold * int(test_ratio * float(number))
+    test_end = (fold+1) * int(test_ratio * float(number))
+    testset = indices[test_start:test_end]
+    testset[::-1].sort()
+    for pl in testset:
+        indices = np.delete(indices, pl, 0)
+    trainset = indices
+    ret = full[trainset]
+    return ret[:,trainset]
 
 def random_selection(proto_number):
     # gets random prototypes
@@ -148,6 +164,8 @@ if __name__ == "__main__":
     test_number = np.shape(test_labels)[0]
 
     distances = [] if selection == "random" else read_dtw_matrix(version, fold)
+    print(np.shape(train_labels))
+    print(np.shape(distances))
 
     if classwise == "classwise":
         proto_loc = np.zeros(0, dtype=np.int32)
