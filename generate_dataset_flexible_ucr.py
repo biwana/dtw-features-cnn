@@ -64,7 +64,8 @@ def k_centers_selection(proto_number, distances):
         was_change = False
         for i, p in enumerate(proto_loc):
             p_group = np.where(membership==p)[0]
-            new_center = p_group[center_selection(1, distances[p_group])][0]
+            d_matrix = distances[p_group]
+            new_center = p_group[center_selection(1, d_matrix[:,p_group])][0]
             if new_center != p:
                 proto_loc[i] = new_center
                 was_change = True
@@ -73,31 +74,6 @@ def k_centers_selection(proto_number, distances):
             break
     return proto_loc
 
-def k_medoids_selection(proto_number, distances):
-    # A simple and fast algorithm for K-medoids clustering
-    no_possible = np.shape(distances)[0]
-
-    # initialize using v_j = \sum^n_{i=1}{\frac{d_{ij}{\sum^n_{l=1}{d_{il}}}}
-    sums = np.sum(distances, axis=1)
-    ratings = np.zeros(no_possible)
-    for c in np.arange(no_possible):
-        ratings[c] = np.sum(distances[c] / sums)
-    proto_loc = np.argsort(ratings)[:proto_number]
-
-    for iter in range(1000):
-        # assign every point into a group with the centers
-        membership = np.zeros(no_possible, dtype=np.int32)
-        for i, d in enumerate(distances):
-            membership[i] = proto_loc[np.argmin(d[proto_loc])]
-        # find center of groups
-        proto_sum = np.sum(distances[proto_loc])
-        for i, p in enumerate(proto_loc):
-            p_group = np.where(membership==p)[0]
-            proto_loc[i] = p_group[center_selection(1, distances[p_group])][0]
-        if proto_sum == np.sum(distances[proto_loc]):
-            print("stopping at {}".format(iter))
-            break
-    return proto_loc
 
 def selector_selector(selection, proto_number, distances):
     if selection == "random":
@@ -108,8 +84,6 @@ def selector_selector(selection, proto_number, distances):
         return border_selection(proto_number, distances)
     elif selection == "spanning":
         return spanning_selection(proto_number, distances)
-    elif selection == "kmedoids":
-        return k_medoids_selection(proto_number, distances)
     elif selection == "kcenters":
         return k_centers_selection(proto_number, distances)
     else:
