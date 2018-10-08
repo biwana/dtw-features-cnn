@@ -25,9 +25,9 @@ def read_dtw_matrix(version):
         exit("Please run cross_dtw.py first")
     return np.genfromtxt(os.path.join("data", "all-"+version+"-dtw-matrix.txt"), delimiter=' ')
 
-def random_selection(proto_number):
+def random_selection(proto_number, train_number):
     # gets random prototypes
-    return np.arange(proto_number)
+    return np.random.randint(train_number, size=proto_number)
 
 def center_selection(proto_number, distances):
     # gets the center prototypes
@@ -77,7 +77,7 @@ def k_centers_selection(proto_number, distances):
 
 def selector_selector(selection, proto_number, distances):
     if selection == "random":
-        return random_selection(proto_number)
+        return random_selection(proto_number, distances)
     elif selection == "centers":
         return center_selection(proto_number, distances)
     elif selection == "borders":
@@ -100,12 +100,34 @@ def param_selector(dataset):
         return 42 #750
     if dataset == "PhalangesOutlinesCorrect":
         return 2 #80
+    if dataset == "ProximalPhalanxOutlineCorrect":
+        return 2 #80
     if dataset == "StarLightCurves":
         return 3 #1024
     if dataset == "Two_Patterns":
         return 4 #128
     if dataset == "wafer":
         return 2 #152
+    if dataset == "ECG5000":
+        return 5 #140
+    if dataset == "FordB":
+        return 2 # 500
+    if dataset == "FacesAll":
+        return 14 # 131
+    if dataset == "FacesAll":
+        return 14 # 131
+    if dataset == "ShapesAll":
+        return 60 # 512
+    if dataset == "SwedishLeaf":
+        return 15 # 128
+    if dataset == "UWaveGestureLibraryAll":
+        return 8 # 945
+    if dataset == "uWaveGestureLibrary_X":
+        return 8 # 315
+    if dataset == "uWaveGestureLibrary_Y":
+        return 8 # 315
+    if dataset == "uWaveGestureLibrary_Z":
+        return 8 # 315
     else:
         return 10
 
@@ -113,12 +135,14 @@ def class_modifier_add(dataset):
     if dataset == "ElectricDevices":
         return -1 #96
     if dataset == "FordA":
-        return 0 #500
+        return 1 #500
     if dataset == "NonInvasiveFatalECG_Thorax1":
         return -1 #750
     if dataset == "NonInvasiveFatalECG_Thorax2":
         return -1 #750
     if dataset == "PhalangesOutlinesCorrect":
+        return 0 #80
+    if dataset == "ProximalPhalanxOutlineCorrect":
         return 0 #80
     if dataset == "StarLightCurves":
         return -1 #1024
@@ -126,6 +150,24 @@ def class_modifier_add(dataset):
         return -1 #128
     if dataset == "wafer":
         return 0 #152
+    if dataset == "ECG5000":
+        return -1 #140
+    if dataset == "FordB":
+        return 1 # 500
+    if dataset == "FacesAll":
+        return -1 # 131
+    if dataset == "ShapesAll":
+        return -1 # 512
+    if dataset == "SwedishLeaf":
+        return -1 # 128
+    if dataset == "UWaveGestureLibraryAll":
+        return -1 # 945
+    if dataset == "uWaveGestureLibrary_X":
+        return -1 # 315
+    if dataset == "uWaveGestureLibrary_Y":
+        return -1 # 315
+    if dataset == "uWaveGestureLibrary_Z":
+        return -1 # 315
     else:
         return 0
 
@@ -140,12 +182,32 @@ def class_modifier_multi(dataset):
         return 1 #750
     if dataset == "PhalangesOutlinesCorrect":
         return 1 #80
+    if dataset == "ProximalPhalanxOutlineCorrect":
+        return 1 #80
     if dataset == "StarLightCurves":
         return 1 #1024
     if dataset == "Two_Patterns":
         return 1 #128
     if dataset == "wafer":
         return 0.5 #152
+    if dataset == "ECG5000":
+        return 1 #140
+    if dataset == "FordB":
+        return 0.5 # 500
+    if dataset == "FacesAll":
+        return 1 # 131
+    if dataset == "ShapesAll":
+        return 1 # 512
+    if dataset == "SwedishLeaf":
+        return 1 # 128
+    if dataset == "UWaveGestureLibraryAll":
+        return 1 # 945
+    if dataset == "uWaveGestureLibrary_X":
+        return 1 # 315
+    if dataset == "uWaveGestureLibrary_Y":
+        return 1 # 315
+    if dataset == "uWaveGestureLibrary_Z":
+        return 1 # 315
     else:
         return 1
 
@@ -184,7 +246,7 @@ if __name__ == "__main__":
     train_data = train_data.reshape((-1,seq_length, 1))
     test_data = test_data.reshape((-1, seq_length, 1))
 
-    distances = [] if selection == "random" else read_dtw_matrix(version)
+    distances = train_number if selection == "random" else read_dtw_matrix(version)
 
     if classwise == "classwise":
         proto_loc = np.zeros(0, dtype=np.int32)
