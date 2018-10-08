@@ -112,8 +112,6 @@ def param_selector(dataset):
         return 5 #140
     if dataset == "FordB":
         return 2 # 500
-    if dataset == "FacesAll":
-        return 14 # 131
     if dataset == "FaceAll":
         return 14 # 131
     if dataset == "ShapesAll":
