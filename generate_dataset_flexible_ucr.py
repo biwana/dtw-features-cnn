@@ -114,7 +114,7 @@ def param_selector(dataset):
         return 2 # 500
     if dataset == "FacesAll":
         return 14 # 131
-    if dataset == "FacesAll":
+    if dataset == "FaceAll":
         return 14 # 131
     if dataset == "ShapesAll":
         return 60 # 512
@@ -154,7 +154,7 @@ def class_modifier_add(dataset):
         return -1 #140
     if dataset == "FordB":
         return 1 # 500
-    if dataset == "FacesAll":
+    if dataset == "FaceAll":
         return -1 # 131
     if dataset == "ShapesAll":
         return -1 # 512
@@ -194,7 +194,7 @@ def class_modifier_multi(dataset):
         return 1 #140
     if dataset == "FordB":
         return 0.5 # 500
-    if dataset == "FacesAll":
+    if dataset == "FaceAll":
         return 1 # 131
     if dataset == "ShapesAll":
         return 1 # 512
