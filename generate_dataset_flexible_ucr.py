@@ -147,7 +147,7 @@ def class_modifier_add(dataset):
     if dataset == "Two_Patterns":
         return -1 #128
     if dataset == "wafer":
-        return 0 #152
+        return 1 #152
     if dataset == "ECG5000":
         return -1 #140
     if dataset == "FordB":
