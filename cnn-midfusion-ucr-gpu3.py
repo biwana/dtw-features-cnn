@@ -5,7 +5,7 @@ import numpy as np
 import network_settings_ucr as ns
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"]="2"
+os.environ["CUDA_VISIBLE_DEVICES"]="3"
 
 nowtime = str(time.time())
 
@@ -15,50 +15,19 @@ print('start')
 
 
 def cnn_model_1D(features, labels, mode):
-    x_image1 = tf.reshape(features["x1"], [-1, ns.IMAGE_SHAPE1[0], ns.IMAGE_SHAPE1[1]])
-    x_image2 = tf.reshape(features["x2"], [-1, ns.IMAGE_SHAPE2[0], ns.IMAGE_SHAPE2[1]])
+    x_1 = tf.reshape(features["x1"], [-1, ns.IMAGE_SHAPE1[0], ns.IMAGE_SHAPE1[1]])
+    x_2 = tf.reshape(features["x2"], [-1, ns.IMAGE_SHAPE2[0], ns.IMAGE_SHAPE2[1]])
 
-    conv1_1 = tf.layers.conv1d(inputs=x_image1, filters=ns.C1_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
+    # variable conv layer
+    for n in range(ns.NUM_CONV):
+        c_1 = tf.layers.conv1d(inputs=x_1, filters=ns.C3_LAYER_SIZE, kernel_size=conv_shape, padding='SAME', activation=tf.nn.relu)
+        x_1 = tf.layers.max_pooling1d(inputs=c_1, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
 
-    pool1_1 = tf.layers.max_pooling1d(inputs=conv1_1, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
-
-    # second conv layer
-
-    conv2_1 = tf.layers.conv1d(inputs=pool1_1, filters=ns.C2_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
-
-    pool2_1 = tf.layers.max_pooling1d(inputs=conv2_1, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
-
-    # third conv layer
-
-    conv3_1 = tf.layers.conv1d(inputs=pool2_1, filters=ns.C3_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
-
-    pool3_1 = tf.layers.max_pooling1d(inputs=conv3_1, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
-
-    # first conv layer
-    conv1_2 = tf.layers.conv1d(inputs=x_image2, filters=ns.C1_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
-
-    pool1_2 = tf.layers.max_pooling1d(inputs=conv1_2, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
-
-    # second conv layer
-
-    conv2_2 = tf.layers.conv1d(inputs=pool1_2, filters=ns.C2_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
-
-    pool2_2 = tf.layers.max_pooling1d(inputs=conv2_2, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
-
-    # third conv layer
-
-    conv3_2 = tf.layers.conv1d(inputs=pool2_2, filters=ns.C3_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
-
-    pool3_2 = tf.layers.max_pooling1d(inputs=conv3_2, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
+        c_2 = tf.layers.conv1d(inputs=x_2, filters=ns.C3_LAYER_SIZE, kernel_size=conv_shape, padding='SAME', activation=tf.nn.relu)
+        x_2 = tf.layers.max_pooling1d(inputs=c_2, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
 
     # combine
-    pool3 = tf.concat([pool3_1, pool3_2], 1)
+    pool3 = tf.concat([x_1, x_2], 1)
 
     # densely connected layer
 
@@ -104,50 +73,19 @@ def cnn_model_1D(features, labels, mode):
 
 
 def cnn_model_2D(features, labels, mode):
-    x_image1 = tf.reshape(features["x1"], [-1, ns.IMAGE_SHAPE1[0], ns.IMAGE_SHAPE1[1], ns.IMAGE_SHAPE1[2]])
-    x_image2 = tf.reshape(features["x2"], [-1, ns.IMAGE_SHAPE2[0], ns.IMAGE_SHAPE2[1], ns.IMAGE_SHAPE2[2]])
+    x_1 = tf.reshape(features["x1"], [-1, ns.IMAGE_SHAPE1[0], ns.IMAGE_SHAPE1[1], ns.IMAGE_SHAPE1[2]])
+    x_2 = tf.reshape(features["x2"], [-1, ns.IMAGE_SHAPE2[0], ns.IMAGE_SHAPE2[1], ns.IMAGE_SHAPE2[2]])
 
-    conv1_1 = tf.layers.conv2d(inputs=x_image1, filters=ns.C1_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
+    # variable conv layer
+    for n in range(ns.NUM_CONV):
+        c_1 = tf.layers.conv1d(inputs=x_1, filters=ns.C3_LAYER_SIZE, kernel_size=conv_shape, padding='SAME', activation=tf.nn.relu)
+        x_1 = tf.layers.max_pooling1d(inputs=c_1, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
 
-    pool1_1 = tf.layers.max_pooling2d(inputs=conv1_1, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
-
-    # second conv layer
-
-    conv2_1 = tf.layers.conv2d(inputs=pool1_1, filters=ns.C2_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
-
-    pool2_1 = tf.layers.max_pooling2d(inputs=conv2_1, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
-
-    # third conv layer
-
-    conv3_1 = tf.layers.conv2d(inputs=pool2_1, filters=ns.C3_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
-
-    pool3_1 = tf.layers.max_pooling2d(inputs=conv3_1, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
-
-    # first conv layer
-    conv1_2 = tf.layers.conv2d(inputs=x_image2, filters=ns.C1_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
-
-    pool1_2 = tf.layers.max_pooling2d(inputs=conv1_2, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
-
-    # second conv layer
-
-    conv2_2 = tf.layers.conv2d(inputs=pool1_2, filters=ns.C2_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
-
-    pool2_2 = tf.layers.max_pooling2d(inputs=conv2_2, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
-
-    # third conv layer
-
-    conv3_2 = tf.layers.conv2d(inputs=pool2_2, filters=ns.C3_LAYER_SIZE, kernel_size=conv_shape, padding='SAME',
-                               activation=tf.nn.relu)
-
-    pool3_2 = tf.layers.max_pooling2d(inputs=conv3_2, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
+        c_2 = tf.layers.conv1d(inputs=x_2, filters=ns.C3_LAYER_SIZE, kernel_size=conv_shape, padding='SAME', activation=tf.nn.relu)
+        x_2 = tf.layers.max_pooling1d(inputs=c_2, pool_size=ns.MPOOL_SHAPE, strides=ns.MPOOL_SHAPE, padding='SAME')
 
     # combine
-    pool3 = tf.concat([pool3_1, pool3_2], 2)
+    pool3 = tf.concat([x_1, x_2], 2)
 
     # densely connected layer
 
@@ -219,6 +157,8 @@ def main(argv):
     train_labels = np.asarray(data_sets1.train.labels, dtype=np.int32)
     eval_data1 = data_sets1.test.images  # Returns np.array
     eval_labels = np.asarray(data_sets1.test.labels, dtype=np.int32)
+
+    print(np.shape(train_data1))
 
     data_sets2 = input_data.read_data_sets(ns.TRAINING_FILE2, ns.TRAINING_LABEL2, ns.IMAGE_SHAPE2, test_file=ns.TEST_FILE2, test_label=ns.TEST_LABEL2, validation_ratio=0.0, pickle=False, boring=False)
     train_data2 = data_sets2.train.images  # Returns np.array
