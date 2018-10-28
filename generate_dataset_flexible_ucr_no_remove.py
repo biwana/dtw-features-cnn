@@ -717,7 +717,7 @@ if __name__ == "__main__":
         writer_train_dtw = csv.writer(train_dtw_file, quoting=csv.QUOTE_NONE, delimiter=" ")
         writer_train_combined = csv.writer(train_combined_file, quoting=csv.QUOTE_NONE, delimiter=" ")
 
-        for sample in range(train_number - proto_number):
+        for sample in range(train_number):
             local_sample = train_data[sample]
             features = get_dtwfeatures(proto_data, proto_number, local_sample)
 
