@@ -26,6 +26,7 @@ def load_settings_mid(dataset, dimen, input_len, input_depth1, input_depth2, inp
     global IMAGE_SHAPE2
 
     global CONV_OUTPUT_SHAPE
+    global NUM_CONV
 
     global NUM_CLASSES
     global MPOOL_SHAPE
