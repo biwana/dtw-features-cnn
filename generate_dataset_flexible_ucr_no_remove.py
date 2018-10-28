@@ -252,7 +252,7 @@ def param_selector(dataset):
         return 2 #152
     if dataset == "Wine":
         return 2 #234
-    if dataset == "WordSynonyms":
+    if dataset == "WordsSynonyms":
         return 25 #270
     if dataset == "Worms":
         return 5 #900
@@ -425,7 +425,7 @@ def class_modifier_add(dataset):
         return 1 #152
     if dataset == "Wine":
         return -1 #234
-    if dataset == "WordSynonyms":
+    if dataset == "WordsSynonyms":
         return -1 #270
     if dataset == "Worms":
         return -1 #900
@@ -598,7 +598,7 @@ def class_modifier_multi(dataset):
         return 0.5 #152
     if dataset == "Wine":
         return 1 #234
-    if dataset == "WordSynonyms":
+    if dataset == "WordsSynonyms":
         return 1 #270
     if dataset == "Worms":
         return 1 #900
