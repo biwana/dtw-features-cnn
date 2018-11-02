@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-__author__ = 'Brian'
-=======
 def param_selector(dataset):
     if dataset == "50words":
         return 50 #270
@@ -519,4 +516,3 @@ def class_modifier_multi(dataset):
     if dataset == "yoga":
         return 1 #426
     exit('missing dataset')
->>>>>>> 68f15c4c012b8181b54495b378328aae4f78f619
