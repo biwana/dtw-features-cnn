@@ -99,7 +99,7 @@ if __name__ == "__main__":
     classwise = sys.argv[3]
     proto_number = int(sys.argv[4])
 
-    print("Starting: {}".format(version))
+    print("Starting: {} {} {}".format(version, selection, classwise))
 
     # load settings
     full_train_file = os.path.join("data", version + "_TRAIN")
@@ -148,12 +148,12 @@ if __name__ == "__main__":
     #print("Selection Done.")
 
     # sorts the prototypes so deletion happens in reverse order and doesn't interfere with indices
-    proto_loc[::-1].sort()
+    #proto_loc[::-1].sort()
 
     # remove prototypes from training data
-    for pl in proto_loc:
-        train_data = np.delete(train_data, pl, 0)
-        train_labels = np.delete(train_labels, pl, 0)
+    #for pl in proto_loc:
+    #    train_data = np.delete(train_data, pl, 0)
+    #    train_labels = np.delete(train_labels, pl, 0)
 
     # start generation
     test_label_fileloc = os.path.join("data", "all-test-label-{}-{}-{}-{}.txt".format(version, selection, classwise, proto_number))
@@ -199,7 +199,7 @@ if __name__ == "__main__":
         writer_train_dtw = csv.writer(train_dtw_file, quoting=csv.QUOTE_NONE, delimiter=" ")
         writer_train_combined = csv.writer(train_combined_file, quoting=csv.QUOTE_NONE, delimiter=" ")
 
-        for sample in range(train_number - proto_number):
+        for sample in range(train_number):
             local_sample = train_data[sample]
             features = get_dtwfeatures(proto_data, proto_number, local_sample)
 

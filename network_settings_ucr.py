@@ -26,6 +26,7 @@ def load_settings_mid(dataset, dimen, input_len, input_depth1, input_depth2, inp
     global IMAGE_SHAPE2
 
     global CONV_OUTPUT_SHAPE
+    global NUM_CONV
 
     global NUM_CLASSES
     global MPOOL_SHAPE
@@ -41,8 +42,13 @@ def load_settings_mid(dataset, dimen, input_len, input_depth1, input_depth2, inp
     TEST_LABEL2 = "data/all-test-label-{}-{}-{}.txt".format(dataset, input_method, input_depth2)
 
     NUM_CLASSES = num_classes
+    NUM_CONV = int(round(math.log(input_len, 2))-3)
+    print("number of conv layers: %s" % str(NUM_CONV))
 
-    output_shape_factor = int(math.ceil(math.ceil(math.ceil(input_len / 2.) / 2.) / 2.))
+    output_shape_factor = input_len
+    for i in range(NUM_CONV):
+        output_shape_factor = math.ceil(output_shape_factor / 2.)
+    output_shape_factor = int(output_shape_factor)
 
     if dimen == '1d':
         CONV_OUTPUT_SHAPE = output_shape_factor * 2  # 50 25 13 7
