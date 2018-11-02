@@ -7,7 +7,7 @@ import math
 import csv
 import os
 import sys
-from constants import param_selector, class_modifier_add, class_modifier_multi
+from constants import param_selector, class_modifier_add, class_modifier_multi, max_seq_len, train_max, train_min
 
 
 def get_dtwfeatures(proto_data, proto_number, local_sample):
@@ -111,16 +111,16 @@ if __name__ == "__main__":
     no_classes = param_selector(version)
     # print(proto_number)
 
-    train_data = full_train[:,1:]
+    train_data = (full_train[:,1:] - train_min(version)) / (train_max(version) - train_min(version))
     train_labels = (full_train[:,0] + class_modifier_add(version))*class_modifier_multi(version)
 
     train_number = np.shape(train_labels)[0]
 
-    test_data = full_test[:,1:]
+    test_data = (full_test[:,1:] - train_min(version)) / (train_max(version) - train_min(version))
     test_labels = (full_test[:,0] + class_modifier_add(version))*class_modifier_multi(version)
 
     test_number = np.shape(test_labels)[0]
-    seq_length = np.shape(test_data)[1]
+    seq_length = max_seq_len(version)
 
     train_data = train_data.reshape((-1,seq_length, 1))
     test_data = test_data.reshape((-1, seq_length, 1))
@@ -177,9 +177,6 @@ if __name__ == "__main__":
             local_sample = test_data[sample]
             features = get_dtwfeatures(proto_data, proto_number, local_sample)
 
-            # set the range from 0-255 for the input_data file (the input_data file was made for images and changes it back down to -1 to 1
-            features = features * 255.
-            local_sample = local_sample * 255.
             class_value = test_labels[sample]
 
             # write files
@@ -189,6 +186,8 @@ if __name__ == "__main__":
             writer_test_dtw.writerow(feature_flat)
             writer_test_combined.writerow(np.append(local_sample_flat, feature_flat))
             writer_test_label.writerow(["{}-{}_test.png".format(class_value, sample), class_value])
+            if sample % (train_number // 100) == 0:
+                print("{} {}%: Test < {} Done".format(version, str(sample / (test_number // 100)),str(sample)))
     print("{}: Test Done".format(version))
 
     # train set
@@ -203,9 +202,6 @@ if __name__ == "__main__":
             local_sample = train_data[sample]
             features = get_dtwfeatures(proto_data, proto_number, local_sample)
 
-            # set the range from 0-255 for the input_data file (the input_data file was made for images and changes it back down to -1 to 1
-            features = features * 255.
-            local_sample = local_sample * 255.
             class_value = train_labels[sample]
 
             # write files
@@ -216,8 +212,8 @@ if __name__ == "__main__":
             writer_train_combined.writerow(np.append(local_sample_flat, feature_flat))
             writer_train_label.writerow(["{}-{}_train.png".format(class_value, sample), class_value])
 
-            if sample % 1000 == 0:
-                print("{}: Training < {} Done".format(version, str(sample)))
+            if sample % (train_number // 100) == 0:
+                print("{} {}%: Training < {} Done".format(version, str(sample / (train_number // 100)),str(sample)))
     print("{}: Training Done".format(version))
 
 
